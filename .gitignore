@@ -19,7 +19,6 @@ output.json
 
 # IntelliJ
 *.iml
-.idea/
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
@@ -35,12 +34,19 @@ google-services.json
 *.hprof
 .gradle
 /local.properties
+
 /.idea/caches
 /.idea/libraries
+/.idea/inspectionProfiles
+/.idea/.name
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/.idea/compiler.xml
+/.idea/kotlinc.xml
+/.idea/migrations.xml
+
 .DS_Store
 /build
 /captures
