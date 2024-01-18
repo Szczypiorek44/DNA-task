@@ -38,7 +38,7 @@ import io.dnatechnology.dnataskandroid.R
 @Composable
 fun ProductsRoute(productsViewModel: ProductsViewModel = viewModel()) {
     LaunchedEffect(Unit) {
-        productsViewModel.getProducts()
+        productsViewModel.fetchProducts()
     }
 
     val products by productsViewModel.products.collectAsStateWithLifecycle()

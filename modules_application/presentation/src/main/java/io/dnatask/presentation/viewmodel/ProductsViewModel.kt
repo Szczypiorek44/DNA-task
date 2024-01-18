@@ -6,6 +6,7 @@ import io.dnatask.data.Product
 import io.dnatask.data.PurchaseApiClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProductsViewModel : ViewModel() {
@@ -13,12 +14,12 @@ class ProductsViewModel : ViewModel() {
     val purchaseApiClient: PurchaseApiClient = PurchaseApiClient()
 
     private var mutableCart = MutableStateFlow<Map<String, Long>>(mapOf())
-    var cart: StateFlow<Map<String, Long>> = mutableCart
+    var cart: StateFlow<Map<String, Long>> = mutableCart.asStateFlow()
 
     private var mutableProducts = MutableStateFlow<List<Product>?>(null)
-    var products: StateFlow<List<Product>?> = mutableProducts
+    var products: StateFlow<List<Product>?> = mutableProducts.asStateFlow()
 
-    fun getProducts() {
+    fun fetchProducts() {
         viewModelScope.launch {
             mutableProducts.value = purchaseApiClient.getProducts()
         }
