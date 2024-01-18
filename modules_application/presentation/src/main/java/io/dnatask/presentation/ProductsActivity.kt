@@ -32,7 +32,7 @@ import io.dnatask.presentation.theme.White
 import io.dnatask.presentation.viewmodel.ProductsViewModel
 import io.dnatechnology.dnataskandroid.R
 
-class RootComposeActivity : ComponentActivity() {
+class ProductsActivity : ComponentActivity() {
 
     private val productsViewModel: ProductsViewModel by viewModels<ProductsViewModel>()
 

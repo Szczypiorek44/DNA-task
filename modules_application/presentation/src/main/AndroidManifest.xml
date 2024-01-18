@@ -14,7 +14,7 @@
         android:theme="@style/Theme.DNATaskAndroid"
         tools:targetApi="31">
         <activity
-            android:name="io.dnatask.presentation.RootComposeActivity"
+            android:name="io.dnatask.presentation.ProductsActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.NoActionBar">
