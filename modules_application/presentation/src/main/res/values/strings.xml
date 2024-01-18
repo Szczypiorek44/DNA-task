@@ -3,4 +3,5 @@
     <string name="main_button_view_based">View based</string>
     <string name="main_button_compose_based">Compose based</string>
     <string name="pay">Pay</string>
+    <string name="loading">LOADING</string>
 </resources>
