@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.dnatask.data.Product
 import io.dnatask.presentation.ProductsActivity
+import io.dnatask.presentation.models.SelectableProductHolder
 import io.dnatask.presentation.theme.Black
 import io.dnatask.presentation.theme.DNATaskAndroidTheme
 import io.dnatask.presentation.theme.White
@@ -41,25 +43,29 @@ fun ProductsRoute(productsViewModel: ProductsViewModel = viewModel()) {
         productsViewModel.fetchProducts()
     }
 
-    val products by productsViewModel.products.collectAsStateWithLifecycle()
+    val productHolders by productsViewModel.products.collectAsStateWithLifecycle()
 
     ProductsScreen(
-        products,
+        productHolders,
         onProductClicked = { productsViewModel.addToCart(it.productID) })
 }
 
 @Composable
-fun ProductsScreen(products: List<Product>?, onProductClicked: (Product) -> Unit) {
+fun ProductsScreen(
+    productHolders: List<SelectableProductHolder>?,
+    onProductClicked: (Product) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (!products.isNullOrEmpty()) {
+        if (!productHolders.isNullOrEmpty()) {
             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(products) {
+                items(productHolders,
+                    key = { it.product.productID }) {
                     ProductRow(
-                        product = it,
+                        productHolder = it,
                         onClicked = onProductClicked
                     )
                 }
@@ -73,18 +79,20 @@ fun ProductsScreen(products: List<Product>?, onProductClicked: (Product) -> Unit
 }
 
 @Composable
-private fun ProductRow(product: Product, onClicked: (Product) -> Unit) {
+private fun ProductRow(productHolder: SelectableProductHolder, onClicked: (Product) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .padding(bottom = 8.dp)
-            .background(White)
+            .background(color = if (productHolder.isSelected) LightGray else White)
             .border(1.dp, Black)
-            .clickable(onClick = { onClicked.invoke(product) })
+            .clickable(onClick = {
+                productHolder.apply { isSelected = !isSelected }
+            })
     ) {
         Text(
-            text = product.toString(),
+            text = productHolder.product.toString(),
             color = Black,
             fontSize = 16.sp,
             modifier = Modifier
