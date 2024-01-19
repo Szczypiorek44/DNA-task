@@ -1,4 +1,4 @@
-package io.dnatask.presentation
+package io.dnatask.presentation.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,7 +8,6 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import io.dnatask.presentation.theme.DNATaskAndroidTheme
 import io.dnatask.presentation.theme.MainBackground
-import io.dnatask.presentation.ui.ProductsRoute
 
 class ProductsActivity : ComponentActivity() {
 

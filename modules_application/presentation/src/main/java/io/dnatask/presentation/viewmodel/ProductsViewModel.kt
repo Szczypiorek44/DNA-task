@@ -3,11 +3,7 @@ package io.dnatask.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.dnatask.data.CardReaderService
-import io.dnatask.data.PaymentApiClient
-import io.dnatask.data.PurchaseApiClient
 import io.dnatask.domain.ProductUseCases
-import io.dnatask.domain.ProductUseCasesImpl
 import io.dnatask.domain.models.BuyProductResult
 import io.dnatask.presentation.models.SelectableProductHolder
 import io.dnatask.presentation.models.SelectableProductHolder.Companion.toSelectableProductHolderList
@@ -20,14 +16,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProductsViewModel(
+    private val productUseCases: ProductUseCases
 ) : ViewModel() {
 
     companion object {
         private const val TAG = "ProductsViewModel"
     }
-
-    private val productUseCases: ProductUseCases =
-        ProductUseCasesImpl(PaymentApiClient(), PurchaseApiClient(), CardReaderService())
 
     private val mutableProducts = MutableStateFlow<List<SelectableProductHolder>?>(null)
     val products: StateFlow<List<SelectableProductHolder>?> = mutableProducts.asStateFlow()

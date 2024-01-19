@@ -29,16 +29,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import io.dnatask.presentation.R
 import io.dnatask.presentation.models.SelectableProductHolder
 import io.dnatask.presentation.theme.Black
 import io.dnatask.presentation.theme.DNATaskAndroidTheme
 import io.dnatask.presentation.theme.White
 import io.dnatask.presentation.viewmodel.ProductsViewModel
-import io.dnatechnology.dnataskandroid.R
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ProductsRoute(productsViewModel: ProductsViewModel = viewModel()) {
+fun ProductsRoute(productsViewModel: ProductsViewModel = koinViewModel()) {
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
