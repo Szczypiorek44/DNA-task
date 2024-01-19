@@ -1,10 +1,10 @@
 package io.dnatask.data
 
-import io.dnatask.data.models.PaymentRequest
-import io.dnatask.data.models.PaymentStatus
-import io.dnatask.data.models.PurchaseConfirmRequest
-import io.dnatask.data.models.PurchaseRequest
-import io.dnatask.data.models.TransactionStatus
+import io.dnatask.data.models.payment.PaymentRequest
+import io.dnatask.data.models.payment.PaymentStatus
+import io.dnatask.data.models.purchase.PurchaseConfirmRequest
+import io.dnatask.data.models.purchase.PurchaseRequest
+import io.dnatask.data.models.transactionStatus.TransactionStatus
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test

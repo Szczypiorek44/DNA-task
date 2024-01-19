@@ -1,12 +1,12 @@
 package io.dnatask.data
 
 import io.dnatask.common.Product
-import io.dnatask.data.models.PurchaseCancelRequest
-import io.dnatask.data.models.PurchaseConfirmRequest
-import io.dnatask.data.models.PurchaseRequest
-import io.dnatask.data.models.PurchaseResponse
-import io.dnatask.data.models.PurchaseStatusResponse
-import io.dnatask.data.models.TransactionStatus
+import io.dnatask.data.models.purchase.PurchaseCancelRequest
+import io.dnatask.data.models.purchase.PurchaseConfirmRequest
+import io.dnatask.data.models.purchase.PurchaseRequest
+import io.dnatask.data.models.purchase.PurchaseResponse
+import io.dnatask.data.models.purchase.PurchaseStatusResponse
+import io.dnatask.data.models.transactionStatus.TransactionStatus
 import kotlinx.coroutines.delay
 import java.util.UUID
 

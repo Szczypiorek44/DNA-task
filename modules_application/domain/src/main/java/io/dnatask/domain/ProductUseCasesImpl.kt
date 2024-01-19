@@ -5,12 +5,12 @@ import io.dnatask.common.Product
 import io.dnatask.data.CardReaderService
 import io.dnatask.data.PaymentApiClient
 import io.dnatask.data.PurchaseApiClient
-import io.dnatask.data.models.PaymentRequest
-import io.dnatask.data.models.PaymentStatus
-import io.dnatask.data.models.PurchaseConfirmRequest
-import io.dnatask.data.models.PurchaseRequest
-import io.dnatask.data.models.PurchaseStatusResponse
-import io.dnatask.data.models.TransactionStatus
+import io.dnatask.data.models.payment.PaymentRequest
+import io.dnatask.data.models.payment.PaymentStatus
+import io.dnatask.data.models.purchase.PurchaseConfirmRequest
+import io.dnatask.data.models.purchase.PurchaseRequest
+import io.dnatask.data.models.purchase.PurchaseStatusResponse
+import io.dnatask.data.models.transactionStatus.TransactionStatus
 import io.dnatask.domain.models.BuyProductResult
 
 internal class ProductUseCasesImpl(

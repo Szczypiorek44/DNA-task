@@ -1,8 +1,8 @@
 package io.dnatask.data
 
-import io.dnatask.data.models.PaymentRequest
-import io.dnatask.data.models.PaymentResponse
-import io.dnatask.data.models.PaymentStatus
+import io.dnatask.data.models.payment.PaymentRequest
+import io.dnatask.data.models.payment.PaymentResponse
+import io.dnatask.data.models.payment.PaymentStatus
 import kotlinx.coroutines.delay
 
 class PaymentApiClient {

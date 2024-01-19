@@ -18,9 +18,9 @@ class CardReaderService {
 
         throw CardReaderException()
     }
-
 }
+
+data class CardData(val token: String)
 
 class CardReaderException : Throwable("Could not read card data")
 
-data class CardData(val token: String)
