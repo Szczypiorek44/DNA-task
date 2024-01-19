@@ -87,7 +87,7 @@ class PurchaseApiClient {
 
             return PurchaseStatusResponse(
                 purchaseRequest.transactionID,
-                TransactionStatus.INITIATED
+                TransactionStatus.CONFIRMED
             )
         } catch (e: Exception) {
             return PurchaseStatusResponse(purchaseRequest.transactionID, TransactionStatus.FAILED)
