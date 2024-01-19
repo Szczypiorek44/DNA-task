@@ -5,7 +5,8 @@ data class PurchaseRequest(val order: Map<String, Long>)
 data class PurchaseResponse(
     val order: Map<String, Long>,
     val transactionID: String,
-    val transactionStatus: TransactionStatus
+    val transactionStatus: TransactionStatus,
+    val amount: Double = 0.0
 )
 
 data class PurchaseConfirmRequest(val order: Map<String, Long>, val transactionID: String)

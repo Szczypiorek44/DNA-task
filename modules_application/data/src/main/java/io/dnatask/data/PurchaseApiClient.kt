@@ -36,7 +36,7 @@ class PurchaseApiClient {
         }
 
         return try {
-            purchaseRequest.order.map { entry ->
+            val sum = purchaseRequest.order.map { entry ->
                 val orderedProduct = productList.first { product -> product.productID == entry.key }
                 if (entry.value <= 0)
                     throw Exception("Not allowed to order not positive number of items")
@@ -50,7 +50,8 @@ class PurchaseApiClient {
             PurchaseResponse(
                 purchaseRequest.order,
                 UUID.randomUUID().toString(),
-                TransactionStatus.INITIATED
+                TransactionStatus.INITIATED,
+                sum
             )
         } catch (e: Exception) {
             PurchaseResponse(

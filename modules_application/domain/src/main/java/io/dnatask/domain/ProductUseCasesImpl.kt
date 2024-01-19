@@ -30,6 +30,7 @@ class ProductUseCasesImpl(
 
     override suspend fun buy(productID: String): BuyProductResult {
         Log.d(TAG, "buy(productID: $productID)")
+
         val purchaseResponse = purchaseApiClient.initiatePurchaseTransaction(
             PurchaseRequest(mapOf(productID to NUMBER_OF_ITEMS))
         )
@@ -51,7 +52,7 @@ class ProductUseCasesImpl(
         Log.d(TAG, "cardData: $cardData")
 
         val paymentResponse = paymentApiClient.pay(
-            PaymentRequest(purchaseResponse.transactionID, 10.0, CURRENCY, cardData.token)
+            PaymentRequest(purchaseResponse.transactionID, purchaseResponse.amount, CURRENCY, cardData.token)
         )
         Log.d(TAG, "paymentResponse: $paymentResponse")
 
