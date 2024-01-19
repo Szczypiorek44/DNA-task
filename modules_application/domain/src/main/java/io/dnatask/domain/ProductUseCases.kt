@@ -1,6 +1,6 @@
 package io.dnatask.domain
 
-import io.dnatask.data.Product
+import io.dnatask.common.Product
 import io.dnatask.domain.models.BuyProductResult
 
 interface ProductUseCases {

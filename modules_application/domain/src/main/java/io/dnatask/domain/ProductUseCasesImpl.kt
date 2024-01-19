@@ -1,9 +1,9 @@
 package io.dnatask.domain
 
 import android.util.Log
+import io.dnatask.common.Product
 import io.dnatask.data.CardReaderService
 import io.dnatask.data.PaymentApiClient
-import io.dnatask.data.Product
 import io.dnatask.data.PurchaseApiClient
 import io.dnatask.data.models.PaymentRequest
 import io.dnatask.data.models.PaymentStatus
@@ -13,7 +13,7 @@ import io.dnatask.data.models.PurchaseStatusResponse
 import io.dnatask.data.models.TransactionStatus
 import io.dnatask.domain.models.BuyProductResult
 
-class ProductUseCasesImpl(
+internal class ProductUseCasesImpl(
     private val paymentApiClient: PaymentApiClient,
     private val purchaseApiClient: PurchaseApiClient,
     private val cardReaderService: CardReaderService

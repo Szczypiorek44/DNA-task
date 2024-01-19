@@ -10,7 +10,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class PaymentAPITests {
-    private val paymentAPI = io.dnatask.data.PaymentApiClient()
+    private val paymentAPI = PaymentApiClient()
 
     @Test
     fun whenCorrectDataThenSuccess() = runBlocking {
