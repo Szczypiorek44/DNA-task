@@ -7,7 +7,9 @@ import io.dnatask.data.Product
 import io.dnatask.data.PurchaseApiClient
 import io.dnatask.data.models.PaymentRequest
 import io.dnatask.data.models.PaymentStatus
+import io.dnatask.data.models.PurchaseConfirmRequest
 import io.dnatask.data.models.PurchaseRequest
+import io.dnatask.data.models.PurchaseStatusResponse
 import io.dnatask.data.models.TransactionStatus
 import io.dnatask.domain.models.BuyProductResult
 
@@ -52,19 +54,32 @@ class ProductUseCasesImpl(
         Log.d(TAG, "cardData: $cardData")
 
         val paymentResponse = paymentApiClient.pay(
-            PaymentRequest(purchaseResponse.transactionID, purchaseResponse.amount, CURRENCY, cardData.token)
+            PaymentRequest(
+                purchaseResponse.transactionID,
+                purchaseResponse.amount,
+                CURRENCY,
+                cardData.token
+            )
         )
         Log.d(TAG, "paymentResponse: $paymentResponse")
 
-        return paymentResponse.status.let {
-            when (it) {
-                PaymentStatus.SUCCESS -> {
-                    BuyProductResult.Success
-                }
+        if (paymentResponse.status != PaymentStatus.SUCCESS) {
+            return BuyProductResult.Failed("Failed to pay for transaction ${paymentResponse.transactionID}")
+        }
 
-                PaymentStatus.FAILED -> {
-                    BuyProductResult.Failed("Failed to pay for transaction ${paymentResponse.transactionID}")
-                }
+        return purchaseApiClient
+            .confirm(PurchaseConfirmRequest(purchaseResponse.order, purchaseResponse.transactionID))
+            .toBuyProductResult()
+    }
+
+    private fun PurchaseStatusResponse.toBuyProductResult(): BuyProductResult {
+        return when (status) {
+            TransactionStatus.CONFIRMED -> {
+                BuyProductResult.Success
+            }
+
+            else -> {
+                BuyProductResult.Failed("Could not confirm transaction $transactionID. ConfirmationStatus: $status")
             }
         }
     }
