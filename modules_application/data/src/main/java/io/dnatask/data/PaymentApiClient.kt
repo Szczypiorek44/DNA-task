@@ -12,7 +12,7 @@ class PaymentApiClient {
     suspend fun pay(paymentRequest: PaymentRequest): PaymentResponse {
         delay(2500)
 
-        return if (paymentRequest.currency == "EUR" && paymentRequest.amount >= 20.00) {
+        return if (paymentRequest.currency == "EUR") {
             PaymentResponse(paymentRequest.transactionID, PaymentStatus.SUCCESS)
         } else {
             PaymentResponse(paymentRequest.transactionID, PaymentStatus.FAILED)
