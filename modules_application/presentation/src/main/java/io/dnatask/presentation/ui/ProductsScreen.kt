@@ -1,6 +1,5 @@
 package io.dnatask.presentation.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,8 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.dnatask.data.Product
-import io.dnatask.presentation.ProductsActivity
 import io.dnatask.presentation.models.SelectableProductHolder
 import io.dnatask.presentation.theme.Black
 import io.dnatask.presentation.theme.DNATaskAndroidTheme
@@ -47,13 +44,13 @@ fun ProductsRoute(productsViewModel: ProductsViewModel = viewModel()) {
 
     ProductsScreen(
         productHolders,
-        onProductClicked = { productsViewModel.addToCart(it.productID) })
+        onPayButtonClicked = { productsViewModel.buySelectedProducts() })
 }
 
 @Composable
 fun ProductsScreen(
     productHolders: List<SelectableProductHolder>?,
-    onProductClicked: (Product) -> Unit
+    onPayButtonClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -64,22 +61,19 @@ fun ProductsScreen(
             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(productHolders,
                     key = { it.product.productID }) {
-                    ProductRow(
-                        productHolder = it,
-                        onClicked = onProductClicked
-                    )
+                    ProductRow(productHolder = it)
                 }
             }
         } else {
             Text(text = stringResource(R.string.loading))
         }
 
-        PayButton(onPayButtonClicked())
+        PayButton(onPayButtonClicked)
     }
 }
 
 @Composable
-private fun ProductRow(productHolder: SelectableProductHolder, onClicked: (Product) -> Unit) {
+private fun ProductRow(productHolder: SelectableProductHolder) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -117,10 +111,6 @@ private fun PayButton(onClicked: () -> Unit) {
             modifier = Modifier.padding(5.dp)
         )
     }
-}
-
-private fun onPayButtonClicked(): () -> Unit = {
-    Log.d(ProductsActivity.TAG, "onPayButtonClicked()")
 }
 
 @Preview(showBackground = true)

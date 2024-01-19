@@ -1,4 +1,4 @@
-package io.dnatask.domain
+package io.dnatask.data
 
 import kotlinx.coroutines.delay
 import java.util.Calendar
