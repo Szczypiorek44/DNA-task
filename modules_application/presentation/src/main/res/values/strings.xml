@@ -4,4 +4,7 @@
     <string name="main_button_compose_based">Compose based</string>
     <string name="pay">Pay</string>
     <string name="loading">LOADING</string>
+    <string name="please_select_at_least_one_product">Please select at least one product</string>
+    <string name="products_successfully_purchased">Products successfully purchased</string>
+    <string name="failed_to_purchase_products">Failed to purchase products</string>
 </resources>

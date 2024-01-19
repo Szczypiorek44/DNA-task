@@ -12,8 +12,10 @@ import io.dnatask.domain.models.BuyProductResult
 import io.dnatask.presentation.models.SelectableProductHolder
 import io.dnatask.presentation.models.SelectableProductHolder.Companion.toSelectableProductHolderList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -30,6 +32,9 @@ class ProductsViewModel(
     private val mutableProducts = MutableStateFlow<List<SelectableProductHolder>?>(null)
     val products: StateFlow<List<SelectableProductHolder>?> = mutableProducts.asStateFlow()
 
+    private val mutablePurchaseResult = MutableSharedFlow<PurchaseResult>()
+    val purchaseResult = mutablePurchaseResult.asSharedFlow()
+
     fun fetchProducts() {
         viewModelScope.launch {
             mutableProducts.value = productUseCases.getProducts().toSelectableProductHolderList()
@@ -39,22 +44,30 @@ class ProductsViewModel(
     fun buySelectedProducts() {
         val selectedProducts = mutableProducts.value?.filter { it.isSelected }?.map { it.product }
 
-        if (!selectedProducts.isNullOrEmpty()) {
-            viewModelScope.launch(Dispatchers.IO) {
-                productUseCases.buy(selectedProducts.first().productID).let { result ->
-                    when (result) {
-                        is BuyProductResult.Success -> {
-                            Log.d(TAG, "buySelectedProducts Success")
+        viewModelScope.launch(Dispatchers.IO) {
+            if (selectedProducts.isNullOrEmpty()) {
+                mutablePurchaseResult.emit(PurchaseResult.NoItemsSelected)
+                return@launch
+            }
 
-                        }
+            productUseCases.buy(selectedProducts.first().productID).let { result ->
+                when (result) {
+                    is BuyProductResult.Success -> {
+                        mutablePurchaseResult.emit(PurchaseResult.Success)
+                    }
 
-                        is BuyProductResult.Failed -> {
-                            Log.d(TAG, "buySelectedProducts Failed(errorMsg: ${result.errorMsg}")
-
-                        }
+                    is BuyProductResult.Failed -> {
+                        Log.d(TAG, "buySelectedProducts Failed(errorMsg: ${result.errorMsg}")
+                        mutablePurchaseResult.emit(PurchaseResult.Failed)
                     }
                 }
             }
         }
+    }
+
+    sealed class PurchaseResult {
+        object NoItemsSelected : PurchaseResult()
+        object Success : PurchaseResult()
+        object Failed : PurchaseResult()
     }
 }
