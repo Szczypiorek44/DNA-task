@@ -12,11 +12,15 @@ import io.dnatask.data.models.purchase.PurchaseRequest
 import io.dnatask.data.models.purchase.PurchaseStatusResponse
 import io.dnatask.data.models.transactionStatus.TransactionStatus
 import io.dnatask.domain.models.BuyProductResult
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 internal class ProductUseCasesImpl(
     private val paymentApiClient: PaymentApiClient,
     private val purchaseApiClient: PurchaseApiClient,
-    private val cardReaderService: CardReaderService
+    private val cardReaderService: CardReaderService,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ProductUseCases {
 
     companion object {
@@ -26,11 +30,11 @@ internal class ProductUseCasesImpl(
         private const val CURRENCY = "EUR"
     }
 
-    override suspend fun getProducts(): List<Product> {
-        return purchaseApiClient.getProducts()
+    override suspend fun getProducts(): List<Product> = withContext(ioDispatcher) {
+        purchaseApiClient.getProducts()
     }
 
-    override suspend fun buy(productID: String): BuyProductResult {
+    override suspend fun buy(productID: String): BuyProductResult = withContext(ioDispatcher) {
         Log.d(TAG, "buy(productID: $productID)")
 
         val purchaseResponse = purchaseApiClient.initiatePurchaseTransaction(
@@ -40,16 +44,18 @@ internal class ProductUseCasesImpl(
 
         purchaseResponse.transactionStatus.let {
             if (it == TransactionStatus.CANCELLED) {
-                return BuyProductResult.Failed("Transaction has been cancelled")
+                return@withContext BuyProductResult.Failed("Transaction has been cancelled")
             } else if (it == TransactionStatus.FAILED) {
-                return BuyProductResult.Failed("Transaction has failed")
+                return@withContext BuyProductResult.Failed("Transaction has failed")
             }
         }
 
         val cardData = try {
             cardReaderService.readCard()
         } catch (throwable: Throwable) {
-            return BuyProductResult.Failed(throwable.localizedMessage ?: "Unknown card read error")
+            return@withContext BuyProductResult.Failed(
+                throwable.message ?: "Unknown card read error"
+            )
         }
         Log.d(TAG, "cardData: $cardData")
 
@@ -64,10 +70,10 @@ internal class ProductUseCasesImpl(
         Log.d(TAG, "paymentResponse: $paymentResponse")
 
         if (paymentResponse.status != PaymentStatus.SUCCESS) {
-            return BuyProductResult.Failed("Failed to pay for transaction ${paymentResponse.transactionID}")
+            return@withContext BuyProductResult.Failed("Failed to pay for transaction ${paymentResponse.transactionID}")
         }
 
-        return purchaseApiClient
+        return@withContext purchaseApiClient
             .confirm(PurchaseConfirmRequest(purchaseResponse.order, purchaseResponse.transactionID))
             .toBuyProductResult()
     }

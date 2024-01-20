@@ -8,7 +8,6 @@ import io.dnatask.domain.models.BuyProductResult
 import io.dnatask.presentation.models.SelectableProductHolder
 import io.dnatask.presentation.models.SelectableProductHolder.Companion.deselectAll
 import io.dnatask.presentation.models.SelectableProductHolder.Companion.toSelectableProductHolderList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,7 +39,7 @@ class ProductsViewModel(
     }
 
     fun onPayButtonClicked() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             if (mutableIsPaymentInProgress.value) {
                 return@launch
             }
