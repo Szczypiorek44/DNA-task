@@ -29,13 +29,13 @@ class ProductsViewModel(
     private val mutablePurchaseResult = MutableSharedFlow<PurchaseResult>()
     val purchaseResult = mutablePurchaseResult.asSharedFlow()
 
-    fun fetchProducts() {
+    init {
         viewModelScope.launch {
             mutableProducts.value = productUseCases.getProducts().toSelectableProductHolderList()
         }
     }
 
-    fun buySelectedProducts() {
+    fun onPayButtonClicked() {
         val selectedProducts = mutableProducts.value?.filter { it.isSelected }?.map { it.product }
 
         viewModelScope.launch(Dispatchers.IO) {

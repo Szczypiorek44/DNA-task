@@ -42,7 +42,6 @@ fun ProductsRoute(productsViewModel: ProductsViewModel = koinViewModel()) {
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        productsViewModel.fetchProducts()
         productsViewModel.purchaseResult.collect { purchaseResult ->
             context.showToast(purchaseResult)
         }
@@ -52,7 +51,7 @@ fun ProductsRoute(productsViewModel: ProductsViewModel = koinViewModel()) {
 
     ProductsScreen(
         productHolders,
-        onPayButtonClicked = { productsViewModel.buySelectedProducts() })
+        onPayButtonClicked = { productsViewModel.onPayButtonClicked() })
 }
 
 @Composable
