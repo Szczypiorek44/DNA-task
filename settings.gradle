@@ -14,11 +14,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "DNATaskAndroid"
 
-include ':presentation', ':domain', ':data', ':common'
+include ':app', ':presentation', ':domain', ':data', ':common'
 
+project(":app").projectDir = file("modules_application/app")
 project(":presentation").projectDir = file("modules_application/presentation")
 project(":domain").projectDir = file("modules_application/domain")
 project(":data").projectDir = file("modules_application/data")
 project(":common").projectDir = file("modules_other/common")
-
-project(":presentation").name = "app"

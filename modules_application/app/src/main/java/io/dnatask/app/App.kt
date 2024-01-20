@@ -1,6 +1,7 @@
-package io.dnatask.presentation
+package io.dnatask.app
 
 import android.app.Application
+import io.dnatask.data.di.dataModule
 import io.dnatask.domain.di.domainModule
 import io.dnatask.presentation.di.presentationModule
 import org.koin.core.context.startKoin
@@ -14,7 +15,7 @@ class App : Application() {
 
     private fun initKoin() {
         startKoin {
-            modules(listOf(domainModule, presentationModule))
+            modules(listOf(dataModule, domainModule, presentationModule))
         }
     }
 }
