@@ -7,7 +7,7 @@ android {
     compileSdk versions.config.compileSdk
 
     defaultConfig {
-        applicationId "io.dnatechnology.dnataskandroid"
+        applicationId "io.dnatask.productsapp"
         minSdk versions.config.minSdk
         targetSdk versions.config.targetSdk
         versionCode versions.config.versionCode
