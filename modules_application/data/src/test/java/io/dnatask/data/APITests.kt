@@ -1,16 +1,16 @@
 package io.dnatask.data
 
-import io.dnatask.data.models.payment.PaymentRequest
-import io.dnatask.data.models.payment.PaymentStatus
-import io.dnatask.data.models.purchase.PurchaseConfirmRequest
-import io.dnatask.data.models.purchase.PurchaseRequest
-import io.dnatask.data.models.transactionStatus.TransactionStatus
+import io.dnatask.domain.models.payment.PaymentRequest
+import io.dnatask.domain.models.payment.PaymentStatus
+import io.dnatask.domain.models.purchase.PurchaseConfirmRequest
+import io.dnatask.domain.models.purchase.PurchaseRequest
+import io.dnatask.domain.models.transaction.TransactionStatus
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class PaymentAPITests {
-    private val paymentAPI = PaymentApiClient()
+    private val paymentAPI = PaymentApiClientImpl()
 
     @Test
     fun whenCorrectDataThenSuccess() = runBlocking {
@@ -99,12 +99,12 @@ class PaymentAPITests {
 }
 
 class PurchaseAPITests {
-    private val purchaseApiClient = PurchaseApiClient()
+    private val purchaseApiClientImpl = PurchaseApiClientImpl()
 
     @Test
     fun whenGetProductsThenSuccess() = runBlocking {
         // when
-        val products = purchaseApiClient.getProducts()
+        val products = purchaseApiClientImpl.getProducts()
 
         // then
         assertEquals(products.size, 5)
@@ -118,7 +118,7 @@ class PurchaseAPITests {
         )
 
         // when
-        val purchaseResponse = purchaseApiClient.initiatePurchaseTransaction(purchaseRequest)
+        val purchaseResponse = purchaseApiClientImpl.initiatePurchaseTransaction(purchaseRequest)
 
         // then
         assertEquals(purchaseResponse.transactionStatus, TransactionStatus.FAILED)
@@ -132,7 +132,7 @@ class PurchaseAPITests {
         )
 
         // when
-        val purchaseResponse = purchaseApiClient.initiatePurchaseTransaction(purchaseRequest)
+        val purchaseResponse = purchaseApiClientImpl.initiatePurchaseTransaction(purchaseRequest)
 
         // then
         assertEquals(purchaseResponse.transactionStatus, TransactionStatus.FAILED)
@@ -146,7 +146,7 @@ class PurchaseAPITests {
         )
 
         // when
-        val purchaseResponse = purchaseApiClient.initiatePurchaseTransaction(purchaseRequest)
+        val purchaseResponse = purchaseApiClientImpl.initiatePurchaseTransaction(purchaseRequest)
 
         // then
         assertEquals(purchaseResponse.transactionStatus, TransactionStatus.FAILED)
@@ -161,7 +161,7 @@ class PurchaseAPITests {
         )
 
         // when
-        val purchaseResponse = purchaseApiClient.confirm(purchaseRequest)
+        val purchaseResponse = purchaseApiClientImpl.confirm(purchaseRequest)
 
         // then
         assertEquals(purchaseResponse.status, TransactionStatus.FAILED)

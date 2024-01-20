@@ -1,4 +1,4 @@
-package io.dnatask.domain.models
+package io.dnatask.domain.models.purchase
 
 sealed class BuyProductResult {
     object Success : BuyProductResult()

@@ -2,16 +2,16 @@ package io.dnatask.domain
 
 import android.util.Log
 import io.dnatask.common.Product
-import io.dnatask.data.CardReaderService
-import io.dnatask.data.PaymentApiClient
-import io.dnatask.data.PurchaseApiClient
-import io.dnatask.data.models.payment.PaymentRequest
-import io.dnatask.data.models.payment.PaymentStatus
-import io.dnatask.data.models.purchase.PurchaseConfirmRequest
-import io.dnatask.data.models.purchase.PurchaseRequest
-import io.dnatask.data.models.purchase.PurchaseStatusResponse
-import io.dnatask.data.models.transactionStatus.TransactionStatus
-import io.dnatask.domain.models.BuyProductResult
+import io.dnatask.domain.models.payment.PaymentRequest
+import io.dnatask.domain.models.payment.PaymentStatus
+import io.dnatask.domain.models.purchase.BuyProductResult
+import io.dnatask.domain.models.purchase.PurchaseConfirmRequest
+import io.dnatask.domain.models.purchase.PurchaseRequest
+import io.dnatask.domain.models.purchase.PurchaseStatusResponse
+import io.dnatask.domain.models.transaction.TransactionStatus
+import io.dnatask.domain.repositories.CardReaderService
+import io.dnatask.domain.repositories.PaymentApiClient
+import io.dnatask.domain.repositories.PurchaseApiClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -42,12 +42,11 @@ internal class ProductUseCasesImpl(
         )
         Log.d(TAG, "purchaseResponse: $purchaseResponse")
 
-        purchaseResponse.transactionStatus.let {
-            if (it == TransactionStatus.CANCELLED) {
-                return@withContext BuyProductResult.Failed("Transaction has been cancelled")
-            } else if (it == TransactionStatus.FAILED) {
-                return@withContext BuyProductResult.Failed("Transaction has failed")
-            }
+        val transactionStatus = purchaseResponse.transactionStatus
+        if (transactionStatus == TransactionStatus.CANCELLED) {
+            return@withContext BuyProductResult.Failed("Transaction has been cancelled")
+        } else if (transactionStatus == TransactionStatus.FAILED) {
+            return@withContext BuyProductResult.Failed("Transaction has failed")
         }
 
         val cardData = try {

@@ -1,16 +1,17 @@
 package io.dnatask.data
 
 import io.dnatask.common.Product
-import io.dnatask.data.models.purchase.PurchaseCancelRequest
-import io.dnatask.data.models.purchase.PurchaseConfirmRequest
-import io.dnatask.data.models.purchase.PurchaseRequest
-import io.dnatask.data.models.purchase.PurchaseResponse
-import io.dnatask.data.models.purchase.PurchaseStatusResponse
-import io.dnatask.data.models.transactionStatus.TransactionStatus
+import io.dnatask.domain.models.purchase.PurchaseCancelRequest
+import io.dnatask.domain.models.purchase.PurchaseConfirmRequest
+import io.dnatask.domain.models.purchase.PurchaseRequest
+import io.dnatask.domain.models.purchase.PurchaseResponse
+import io.dnatask.domain.models.purchase.PurchaseStatusResponse
+import io.dnatask.domain.models.transaction.TransactionStatus
+import io.dnatask.domain.repositories.PurchaseApiClient
 import kotlinx.coroutines.delay
 import java.util.UUID
 
-class PurchaseApiClient {
+class PurchaseApiClientImpl: PurchaseApiClient {
     companion object {
         val productList = listOf(
             Product("12345", "Big soda", 123, 2.99, "EUR", 0.22),
@@ -21,12 +22,12 @@ class PurchaseApiClient {
         )
     }
 
-    suspend fun getProducts(): List<Product> {
+    override suspend fun getProducts(): List<Product> {
         delay(300)
         return productList
     }
 
-    suspend fun initiatePurchaseTransaction(purchaseRequest: PurchaseRequest): PurchaseResponse {
+    override suspend fun initiatePurchaseTransaction(purchaseRequest: PurchaseRequest): PurchaseResponse {
         delay(250)
         if (purchaseRequest.order.isEmpty()) {
             return PurchaseResponse(
@@ -63,7 +64,7 @@ class PurchaseApiClient {
         }
     }
 
-    suspend fun confirm(purchaseRequest: PurchaseConfirmRequest): PurchaseStatusResponse {
+    override suspend fun confirm(purchaseRequest: PurchaseConfirmRequest): PurchaseStatusResponse {
         delay(250)
         if (purchaseRequest.order.isEmpty()) {
             return PurchaseStatusResponse(purchaseRequest.transactionID, TransactionStatus.FAILED)
@@ -95,7 +96,7 @@ class PurchaseApiClient {
         }
     }
 
-    suspend fun cancel(purchaseRequest: PurchaseCancelRequest): PurchaseStatusResponse {
+    override suspend fun cancel(purchaseRequest: PurchaseCancelRequest): PurchaseStatusResponse {
         delay(250)
         return PurchaseStatusResponse(purchaseRequest.transactionID, TransactionStatus.CANCELLED)
     }

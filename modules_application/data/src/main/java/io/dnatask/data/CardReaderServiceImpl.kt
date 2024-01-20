@@ -1,13 +1,16 @@
 package io.dnatask.data
 
+import io.dnatask.domain.models.card.CardData
+import io.dnatask.domain.models.card.CardReaderException
+import io.dnatask.domain.repositories.CardReaderService
 import kotlinx.coroutines.delay
 import java.util.Calendar
 import java.util.Calendar.SECOND
 import java.util.UUID
 
-class CardReaderService {
+class CardReaderServiceImpl : CardReaderService {
 
-    suspend fun readCard(): CardData {
+    override suspend fun readCard(): CardData {
         val second = Calendar.getInstance().get(SECOND)
 
         if (second <= 5) {
@@ -20,7 +23,6 @@ class CardReaderService {
     }
 }
 
-data class CardData(val token: String)
 
-class CardReaderException : Throwable("Could not read card data")
+
 

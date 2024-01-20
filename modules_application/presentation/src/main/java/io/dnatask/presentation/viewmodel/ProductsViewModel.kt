@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.dnatask.domain.ProductUseCases
-import io.dnatask.domain.models.BuyProductResult
+import io.dnatask.domain.models.purchase.BuyProductResult
 import io.dnatask.presentation.models.SelectableProductHolder
 import io.dnatask.presentation.models.SelectableProductHolder.Companion.deselectAll
 import io.dnatask.presentation.models.SelectableProductHolder.Companion.toSelectableProductHolderList

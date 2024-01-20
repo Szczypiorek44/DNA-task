@@ -1,4 +1,4 @@
-package io.dnatask.data.models.transactionStatus
+package io.dnatask.domain.models.transaction
 
 enum class TransactionStatus {
     INITIATED,

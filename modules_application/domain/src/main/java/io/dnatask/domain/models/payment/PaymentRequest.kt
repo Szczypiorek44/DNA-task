@@ -1,4 +1,4 @@
-package io.dnatask.data.models.payment
+package io.dnatask.domain.models.payment
 
 data class PaymentRequest(
     val transactionID: String,

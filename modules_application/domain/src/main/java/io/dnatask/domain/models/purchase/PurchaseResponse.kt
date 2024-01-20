@@ -1,6 +1,6 @@
-package io.dnatask.data.models.purchase
+package io.dnatask.domain.models.purchase
 
-import io.dnatask.data.models.transactionStatus.TransactionStatus
+import io.dnatask.domain.models.transaction.TransactionStatus
 
 data class PurchaseResponse(
     val order: Map<String, Long>,
