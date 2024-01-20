@@ -15,6 +15,11 @@ data class SelectableProductHolder(
             return this.map { it.toSelectableProductHolder() }
         }
 
+        fun List<SelectableProductHolder>.deselectAll(): List<SelectableProductHolder> {
+            return this.onEach { it.isSelected = false }
+        }
+
+
         private fun Product.toSelectableProductHolder(): SelectableProductHolder {
             return SelectableProductHolder(this)
         }

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import io.dnatask.domain.ProductUseCases
 import io.dnatask.domain.models.BuyProductResult
 import io.dnatask.presentation.models.SelectableProductHolder
+import io.dnatask.presentation.models.SelectableProductHolder.Companion.deselectAll
 import io.dnatask.presentation.models.SelectableProductHolder.Companion.toSelectableProductHolderList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -58,6 +59,7 @@ class ProductsViewModel(
             when (result) {
                 is BuyProductResult.Success -> {
                     mutablePurchaseResult.emit(PurchaseResult.Success)
+                    mutableProducts.apply { value = value?.deselectAll() }
                 }
 
                 is BuyProductResult.Failed -> {
