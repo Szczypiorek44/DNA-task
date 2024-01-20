@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk versions.config.compileSdk
 
     defaultConfig {
         applicationId "io.dnatechnology.dnataskandroid"
-        minSdk 21
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        minSdk versions.config.minSdk
+        targetSdk versions.config.targetSdk
+        versionCode versions.config.versionCode
+        versionName versions.config.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -37,7 +37,7 @@ android {
         viewBinding true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion versions.deps.compose
     }
     packagingOptions {
         resources {
@@ -50,29 +50,29 @@ dependencies {
     implementation project(':domain')
     implementation project(':common')
 
-    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation "androidx.appcompat:appcompat:$versions.deps.appcompat"
     constraints {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.config.kotlin") {
             because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
         }
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.config.kotlin") {
             because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
         }
     }
 
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.activity:activity-compose:1.7.2'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+    implementation "androidx.core:core-ktx:$versions.deps.coreKtx"
+    implementation "androidx.compose.ui:ui:$versions.deps.compose"
+    implementation "androidx.compose.material:material:$versions.deps.compose"
+    implementation "androidx.compose.ui:ui-tooling-preview:$versions.deps.compose"
+    implementation "androidx.activity:activity-compose:$versions.deps.activityCompose"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.deps.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.deps.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:$versions.deps.lifecycle"
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    androidTestImplementation "androidx.test.ext:junit:$versions.tests.androidxJunit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.tests.espresso"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$versions.deps.compose"
 
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$versions.deps.compose"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$versions.deps.compose"
 }

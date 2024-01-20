@@ -1,0 +1,34 @@
+ext.versions = [:]
+
+def config = [:]
+config.compileSdk = 33
+config.minSdk = 21
+config.targetSdk = 33
+
+config.versionCode = 1
+config.versionName = "1.0"
+
+config.androidGradlePlugin = "7.2.2"
+config.kotlin = "1.8.0"
+
+versions.config = config
+
+def deps = [:]
+deps.appcompat = "1.3.0"
+deps.compose = "1.4.0"
+deps.activityCompose = "1.7.2"
+deps.lifecycle = "2.6.1"
+deps.coroutines = "1.3.9"
+deps.coreKtx = "1.10.1"
+deps.koin = "3.5.3"
+
+versions.deps = deps
+
+def tests = [:]
+tests.junit = "4.13.2"
+tests.androidxJunit = "1.1.5"
+tests.espresso = "3.5.1"
+
+versions.tests = tests
+
+

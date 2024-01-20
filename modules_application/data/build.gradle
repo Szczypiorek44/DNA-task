@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk versions.config.compileSdk
 }
 
 dependencies {
     implementation project(':common')
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "junit:junit:$versions.tests.junit"
 }
