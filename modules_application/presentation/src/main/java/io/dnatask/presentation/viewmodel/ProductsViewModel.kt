@@ -41,6 +41,10 @@ class ProductsViewModel(
 
     fun onPayButtonClicked() {
         viewModelScope.launch(Dispatchers.IO) {
+            if (mutableIsPaymentInProgress.value) {
+                return@launch
+            }
+
             mutableIsPaymentInProgress.value = true
             buySelectedProducts()
             mutableIsPaymentInProgress.value = false
