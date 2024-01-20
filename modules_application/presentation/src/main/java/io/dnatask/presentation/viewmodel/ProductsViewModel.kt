@@ -29,6 +29,9 @@ class ProductsViewModel(
     private val mutablePurchaseResult = MutableSharedFlow<PurchaseResult>()
     val purchaseResult = mutablePurchaseResult.asSharedFlow()
 
+    private val mutableIsPaymentInProgress = MutableStateFlow(false)
+    val isPaymentInProgress = mutableIsPaymentInProgress.asStateFlow()
+
     init {
         viewModelScope.launch {
             mutableProducts.value = productUseCases.getProducts().toSelectableProductHolderList()
@@ -36,24 +39,30 @@ class ProductsViewModel(
     }
 
     fun onPayButtonClicked() {
+        viewModelScope.launch(Dispatchers.IO) {
+            mutableIsPaymentInProgress.value = true
+            buySelectedProducts()
+            mutableIsPaymentInProgress.value = false
+        }
+    }
+
+    private suspend fun buySelectedProducts() {
         val selectedProducts = mutableProducts.value?.filter { it.isSelected }?.map { it.product }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            if (selectedProducts.isNullOrEmpty()) {
-                mutablePurchaseResult.emit(PurchaseResult.NoItemsSelected)
-                return@launch
-            }
+        if (selectedProducts.isNullOrEmpty()) {
+            mutablePurchaseResult.emit(PurchaseResult.NoItemsSelected)
+            return
+        }
 
-            productUseCases.buy(selectedProducts.first().productID).let { result ->
-                when (result) {
-                    is BuyProductResult.Success -> {
-                        mutablePurchaseResult.emit(PurchaseResult.Success)
-                    }
+        productUseCases.buy(selectedProducts.first().productID).let { result ->
+            when (result) {
+                is BuyProductResult.Success -> {
+                    mutablePurchaseResult.emit(PurchaseResult.Success)
+                }
 
-                    is BuyProductResult.Failed -> {
-                        Log.d(TAG, "buySelectedProducts Failed(errorMsg: ${result.errorMsg}")
-                        mutablePurchaseResult.emit(PurchaseResult.Failed)
-                    }
+                is BuyProductResult.Failed -> {
+                    Log.d(TAG, "buySelectedProducts Failed(errorMsg: ${result.errorMsg}")
+                    mutablePurchaseResult.emit(PurchaseResult.Failed)
                 }
             }
         }

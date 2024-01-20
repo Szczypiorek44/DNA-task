@@ -48,15 +48,18 @@ fun ProductsRoute(productsViewModel: ProductsViewModel = koinViewModel()) {
     }
 
     val productHolders by productsViewModel.products.collectAsStateWithLifecycle()
+    val isPaymentInProgress by productsViewModel.isPaymentInProgress.collectAsStateWithLifecycle()
 
     ProductsScreen(
         productHolders,
+        isPaymentInProgress,
         onPayButtonClicked = { productsViewModel.onPayButtonClicked() })
 }
 
 @Composable
 fun ProductsScreen(
     productHolders: List<SelectableProductHolder>?,
+    isPaymentInProgress: Boolean,
     onPayButtonClicked: () -> Unit
 ) {
     Column(
@@ -75,7 +78,7 @@ fun ProductsScreen(
             Text(text = stringResource(R.string.loading))
         }
 
-        PayButton(onPayButtonClicked)
+        PayButton(isPaymentInProgress, onPayButtonClicked)
     }
 }
 
@@ -104,12 +107,13 @@ private fun ProductRow(productHolder: SelectableProductHolder) {
 }
 
 @Composable
-private fun PayButton(onClicked: () -> Unit) {
+private fun PayButton(isPaymentInProgress: Boolean, onClicked: () -> Unit) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
         colors = ButtonDefaults.buttonColors(White),
+        enabled = !isPaymentInProgress,
         onClick = onClicked,
     ) {
         Text(
