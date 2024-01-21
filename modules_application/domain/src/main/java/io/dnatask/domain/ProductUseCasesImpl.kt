@@ -2,13 +2,16 @@ package io.dnatask.domain
 
 import android.util.Log
 import io.dnatask.common.Product
+import io.dnatask.domain.models.card.CardData
+import io.dnatask.domain.models.card.CardReaderException
 import io.dnatask.domain.models.payment.PaymentRequest
 import io.dnatask.domain.models.payment.PaymentStatus
 import io.dnatask.domain.models.purchase.BuyProductResult
 import io.dnatask.domain.models.purchase.PurchaseConfirmRequest
 import io.dnatask.domain.models.purchase.PurchaseRequest
-import io.dnatask.domain.models.purchase.PurchaseStatusResponse
-import io.dnatask.domain.models.transaction.TransactionStatus
+import io.dnatask.domain.models.transaction.TransactionStatus.CANCELLED
+import io.dnatask.domain.models.transaction.TransactionStatus.CONFIRMED
+import io.dnatask.domain.models.transaction.TransactionStatus.FAILED
 import io.dnatask.domain.repositories.CardReaderService
 import io.dnatask.domain.repositories.PaymentApiClient
 import io.dnatask.domain.repositories.PurchaseApiClient
@@ -34,58 +37,52 @@ internal class ProductUseCasesImpl(
         purchaseApiClient.getProducts()
     }
 
-    override suspend fun buy(productID: String): BuyProductResult = withContext(ioDispatcher) {
-        Log.d(TAG, "buy(productID: $productID)")
-
-        val purchaseResponse = purchaseApiClient.initiatePurchaseTransaction(
-            PurchaseRequest(mapOf(productID to NUMBER_OF_ITEMS))
-        )
-        Log.d(TAG, "purchaseResponse: $purchaseResponse")
-
-        val transactionStatus = purchaseResponse.transactionStatus
-        if (transactionStatus == TransactionStatus.CANCELLED) {
-            return@withContext BuyProductResult.Failed("Transaction has been cancelled")
-        } else if (transactionStatus == TransactionStatus.FAILED) {
-            return@withContext BuyProductResult.Failed("Transaction has failed")
-        }
-
-        val cardData = try {
-            cardReaderService.readCard()
-        } catch (throwable: Throwable) {
-            return@withContext BuyProductResult.Failed(
-                throwable.message ?: "Unknown card read error"
-            )
-        }
-        Log.d(TAG, "cardData: $cardData")
-
-        val paymentResponse = paymentApiClient.pay(
-            PaymentRequest(
-                purchaseResponse.transactionID,
-                purchaseResponse.amount,
-                CURRENCY,
-                cardData.token
-            )
-        )
-        Log.d(TAG, "paymentResponse: $paymentResponse")
-
-        if (paymentResponse.status != PaymentStatus.SUCCESS) {
-            return@withContext BuyProductResult.Failed("Failed to pay for transaction ${paymentResponse.transactionID}")
-        }
-
-        return@withContext purchaseApiClient
-            .confirm(PurchaseConfirmRequest(purchaseResponse.order, purchaseResponse.transactionID))
-            .toBuyProductResult()
+    override suspend fun buy(products: List<Product>) = withContext(ioDispatcher) {
+        Log.d(TAG, "buy(products: $products)")
+        val product = products.first()
+        val order = mapOf(product.productID to NUMBER_OF_ITEMS)
+        buy(order)
     }
 
-    private fun PurchaseStatusResponse.toBuyProductResult(): BuyProductResult {
-        return when (status) {
-            TransactionStatus.CONFIRMED -> {
-                BuyProductResult.Success
-            }
+    private suspend fun buy(order: Map<String, Long>): BuyProductResult {
+        val purchaseResponse = purchaseApiClient.initiatePurchaseTransaction(PurchaseRequest(order))
 
-            else -> {
-                BuyProductResult.Failed("Could not confirm transaction $transactionID. ConfirmationStatus: $status")
+        val trxStatus = purchaseResponse.transactionStatus
+        if (trxStatus == CANCELLED || trxStatus == FAILED) {
+            return BuyProductResult.Failed("Failed to initiate purchase")
+        }
+
+        val cardData = cardReaderService.readCardSafely()
+            ?: return BuyProductResult.Failed("Card data is null")
+
+        val trxID = purchaseResponse.transactionID
+        val amount = purchaseResponse.amount
+        val token = cardData.token
+
+        val paymentResponse = paymentApiClient.pay(PaymentRequest(trxID, amount, CURRENCY, token))
+        if (paymentResponse.status == PaymentStatus.FAILED) {
+            return BuyProductResult.Failed("Failed to pay for transaction ${paymentResponse.transactionID}")
+        }
+
+        val confirmRequest = PurchaseConfirmRequest(order, trxID)
+
+        purchaseApiClient.confirm(confirmRequest).let {
+            if (it.status == CONFIRMED) {
+                return BuyProductResult.Success
+            } else {
+                return BuyProductResult.Failed("Could not confirm transaction $trxID. ConfirmationStatus: ${it.status}")
             }
+        }
+    }
+
+    private suspend fun CardReaderService.readCardSafely(): CardData? {
+        return try {
+            readCard().also {
+                Log.d(TAG, "cardData: $it")
+            }
+        } catch (exception: CardReaderException) {
+            Log.d(TAG, "Failed to read card: ${exception.message}")
+            null
         }
     }
 }

@@ -6,5 +6,5 @@ import io.dnatask.domain.models.purchase.BuyProductResult
 interface ProductUseCases {
 
     suspend fun getProducts(): List<Product>
-    suspend fun buy(productID: String): BuyProductResult
+    suspend fun buy(products: List<Product>): BuyProductResult
 }

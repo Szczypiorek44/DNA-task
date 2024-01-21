@@ -58,7 +58,7 @@ class ProductsViewModel(
             return
         }
 
-        productUseCases.buy(selectedProducts.first().productID).let { result ->
+        productUseCases.buy(selectedProducts).let { result ->
             when (result) {
                 is BuyProductResult.Success -> {
                     mutablePurchaseResult.emit(PurchaseResult.Success)
