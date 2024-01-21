@@ -30,12 +30,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.dnatask.presentation.R
+import io.dnatask.presentation.di.previewModule
 import io.dnatask.presentation.models.SelectableProductHolder
 import io.dnatask.presentation.theme.Black
 import io.dnatask.presentation.theme.DNATaskAndroidTheme
 import io.dnatask.presentation.theme.White
 import io.dnatask.presentation.viewmodel.ProductsViewModel
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.KoinApplication
 
 @Composable
 fun ProductsRoute(productsViewModel: ProductsViewModel = koinViewModel()) {
@@ -148,7 +150,9 @@ private fun ProductsViewModel.PurchaseResult.getReadableMessage(context: Context
 @Preview(showBackground = true)
 @Composable
 fun ProductsScreenPreview() {
-    DNATaskAndroidTheme {
-        ProductsRoute()
+    KoinApplication({ modules(previewModule) }) {
+        DNATaskAndroidTheme {
+            ProductsRoute()
+        }
     }
 }
