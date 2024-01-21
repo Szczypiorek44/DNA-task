@@ -1,6 +1,6 @@
 package io.dnatask.domain.usecases
 
-import io.dnatask.common.Product
+import io.dnatask.domain.models.Product
 
 interface GetProductsUseCase {
 

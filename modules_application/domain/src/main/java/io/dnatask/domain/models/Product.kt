@@ -1,4 +1,4 @@
-package io.dnatask.common
+package io.dnatask.domain.models
 
 /**
  * productID - globally unique product identifier

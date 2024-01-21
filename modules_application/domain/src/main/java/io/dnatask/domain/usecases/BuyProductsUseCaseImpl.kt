@@ -1,10 +1,10 @@
 package io.dnatask.domain.usecases
 
 import android.util.Log
-import io.dnatask.common.Product
 import io.dnatask.domain.api.CardReaderService
 import io.dnatask.domain.api.PaymentApiClient
 import io.dnatask.domain.api.PurchaseApiClient
+import io.dnatask.domain.models.Product
 import io.dnatask.domain.models.card.CardData
 import io.dnatask.domain.models.card.CardReaderException
 import io.dnatask.domain.models.payment.PaymentRequest

@@ -1,7 +1,7 @@
 package io.dnatask.domain.usecases
 
-import io.dnatask.common.Product
 import io.dnatask.domain.api.PurchaseApiClient
+import io.dnatask.domain.models.Product
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

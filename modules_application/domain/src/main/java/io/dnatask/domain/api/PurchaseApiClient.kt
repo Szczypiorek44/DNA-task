@@ -1,6 +1,6 @@
 package io.dnatask.domain.api
 
-import io.dnatask.common.Product
+import io.dnatask.domain.models.Product
 import io.dnatask.domain.models.purchase.PurchaseCancelRequest
 import io.dnatask.domain.models.purchase.PurchaseConfirmRequest
 import io.dnatask.domain.models.purchase.PurchaseRequest

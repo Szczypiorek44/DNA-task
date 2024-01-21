@@ -3,7 +3,7 @@ package io.dnatask.presentation.models
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import io.dnatask.common.Product
+import io.dnatask.domain.models.Product
 
 data class SelectableProductHolder(
     val product: Product

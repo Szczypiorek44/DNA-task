@@ -1,6 +1,6 @@
 package io.dnatask.presentation.di
 
-import io.dnatask.common.Product
+import io.dnatask.domain.models.Product
 import io.dnatask.domain.models.purchase.BuyProductResult
 import io.dnatask.domain.usecases.BuyProductsUseCase
 import io.dnatask.domain.usecases.GetProductsUseCase
