@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -71,7 +72,13 @@ fun ProductsScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (!productHolders.isNullOrEmpty()) {
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(
+                    top = 16.dp,
+                    bottom = 16.dp
+                )
+            ) {
                 items(productHolders,
                     key = { it.product.productID }) {
                     ProductRow(productHolder = it)
