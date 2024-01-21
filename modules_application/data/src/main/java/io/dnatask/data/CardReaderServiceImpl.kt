@@ -1,8 +1,8 @@
 package io.dnatask.data
 
+import io.dnatask.domain.api.CardReaderService
 import io.dnatask.domain.models.card.CardData
 import io.dnatask.domain.models.card.CardReaderException
-import io.dnatask.domain.repositories.CardReaderService
 import kotlinx.coroutines.delay
 import java.util.Calendar
 import java.util.Calendar.SECOND

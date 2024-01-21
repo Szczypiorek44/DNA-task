@@ -1,4 +1,4 @@
-package io.dnatask.domain.repositories
+package io.dnatask.domain.api
 
 import io.dnatask.domain.models.card.CardData
 

@@ -1,4 +1,4 @@
-package io.dnatask.domain.repositories
+package io.dnatask.domain.api
 
 import io.dnatask.common.Product
 import io.dnatask.domain.models.purchase.PurchaseCancelRequest

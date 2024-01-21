@@ -2,6 +2,9 @@ package io.dnatask.domain
 
 import android.util.Log
 import io.dnatask.common.Product
+import io.dnatask.domain.api.CardReaderService
+import io.dnatask.domain.api.PaymentApiClient
+import io.dnatask.domain.api.PurchaseApiClient
 import io.dnatask.domain.models.card.CardData
 import io.dnatask.domain.models.card.CardReaderException
 import io.dnatask.domain.models.payment.PaymentRequest
@@ -12,9 +15,6 @@ import io.dnatask.domain.models.purchase.PurchaseRequest
 import io.dnatask.domain.models.transaction.TransactionStatus.CANCELLED
 import io.dnatask.domain.models.transaction.TransactionStatus.CONFIRMED
 import io.dnatask.domain.models.transaction.TransactionStatus.FAILED
-import io.dnatask.domain.repositories.CardReaderService
-import io.dnatask.domain.repositories.PaymentApiClient
-import io.dnatask.domain.repositories.PurchaseApiClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
