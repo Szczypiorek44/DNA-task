@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -80,7 +81,7 @@ fun ProductsScreen(
             Text(text = stringResource(R.string.loading))
         }
 
-        PayButton(isPaymentInProgress, onPayButtonClicked)
+        PayButtonWithProgress(isPaymentInProgress, onPayButtonClicked)
     }
 }
 
@@ -109,20 +110,30 @@ private fun ProductRow(productHolder: SelectableProductHolder) {
 }
 
 @Composable
-private fun PayButton(isPaymentInProgress: Boolean, onClicked: () -> Unit) {
-    Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        colors = ButtonDefaults.buttonColors(White),
-        enabled = !isPaymentInProgress,
-        onClick = onClicked,
-    ) {
-        Text(
-            text = stringResource(R.string.pay),
-            color = Black,
-            modifier = Modifier.padding(5.dp)
-        )
+private fun PayButtonWithProgress(isPaymentInProgress: Boolean, onClicked: () -> Unit) {
+    Column {
+        if (isPaymentInProgress) {
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                color = White,
+            )
+        }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            colors = ButtonDefaults.buttonColors(White),
+            enabled = !isPaymentInProgress,
+            onClick = onClicked,
+        ) {
+            Text(
+                text = stringResource(R.string.pay),
+                color = Black,
+                modifier = Modifier.padding(5.dp)
+            )
+        }
     }
 }
 
