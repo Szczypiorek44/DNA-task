@@ -3,8 +3,9 @@ package io.dnatask.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.dnatask.domain.ProductUseCases
 import io.dnatask.domain.models.purchase.BuyProductResult
+import io.dnatask.domain.usecases.BuyProductsUseCase
+import io.dnatask.domain.usecases.GetProductsUseCase
 import io.dnatask.presentation.models.SelectableProductHolder
 import io.dnatask.presentation.models.SelectableProductHolder.Companion.deselectAll
 import io.dnatask.presentation.models.SelectableProductHolder.Companion.toSelectableProductHolderList
@@ -16,7 +17,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProductsViewModel(
-    private val productUseCases: ProductUseCases
+    private val getProductsUseCase: GetProductsUseCase,
+    private val buyProductsUseCase: BuyProductsUseCase
 ) : ViewModel() {
 
     companion object {
@@ -34,7 +36,7 @@ class ProductsViewModel(
 
     init {
         viewModelScope.launch {
-            mutableProducts.value = productUseCases.getProducts().toSelectableProductHolderList()
+            mutableProducts.value = getProductsUseCase().toSelectableProductHolderList()
         }
     }
 
@@ -58,7 +60,7 @@ class ProductsViewModel(
             return
         }
 
-        productUseCases.buy(selectedProducts).let { result ->
+        buyProductsUseCase(selectedProducts).let { result ->
             when (result) {
                 is BuyProductResult.Success -> {
                     mutablePurchaseResult.emit(PurchaseResult.Success)

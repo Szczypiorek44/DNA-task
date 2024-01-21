@@ -1,4 +1,4 @@
-package io.dnatask.domain
+package io.dnatask.domain.usecases
 
 import android.util.Log
 import io.dnatask.common.Product
@@ -12,43 +12,38 @@ import io.dnatask.domain.models.payment.PaymentStatus
 import io.dnatask.domain.models.purchase.BuyProductResult
 import io.dnatask.domain.models.purchase.PurchaseConfirmRequest
 import io.dnatask.domain.models.purchase.PurchaseRequest
-import io.dnatask.domain.models.transaction.TransactionStatus.CANCELLED
-import io.dnatask.domain.models.transaction.TransactionStatus.CONFIRMED
-import io.dnatask.domain.models.transaction.TransactionStatus.FAILED
+import io.dnatask.domain.models.transaction.TransactionStatus
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-internal class ProductUseCasesImpl(
+internal class BuyProductsUseCaseImpl(
     private val paymentApiClient: PaymentApiClient,
     private val purchaseApiClient: PurchaseApiClient,
     private val cardReaderService: CardReaderService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : ProductUseCases {
+) : BuyProductsUseCase {
 
     companion object {
-        private const val TAG = "ProductUseCasesImpl"
+        private const val TAG = "BuyProductsUseCaseImpl"
 
         private const val NUMBER_OF_ITEMS: Long = 1
         private const val CURRENCY = "EUR"
     }
 
-    override suspend fun getProducts(): List<Product> = withContext(ioDispatcher) {
-        purchaseApiClient.getProducts()
-    }
-
-    override suspend fun buy(products: List<Product>) = withContext(ioDispatcher) {
-        Log.d(TAG, "buy(products: $products)")
-        val product = products.first()
-        val order = mapOf(product.productID to NUMBER_OF_ITEMS)
-        buy(order)
-    }
+    override suspend fun invoke(products: List<Product>): BuyProductResult =
+        withContext(ioDispatcher) {
+            Log.d(TAG, "buy(products: $products)")
+            val product = products.first()
+            val order = mapOf(product.productID to NUMBER_OF_ITEMS)
+            buy(order)
+        }
 
     private suspend fun buy(order: Map<String, Long>): BuyProductResult {
         val purchaseResponse = purchaseApiClient.initiatePurchaseTransaction(PurchaseRequest(order))
 
         val trxStatus = purchaseResponse.transactionStatus
-        if (trxStatus == CANCELLED || trxStatus == FAILED) {
+        if (trxStatus == TransactionStatus.CANCELLED || trxStatus == TransactionStatus.FAILED) {
             return BuyProductResult.Failed("Failed to initiate purchase")
         }
 
@@ -67,7 +62,7 @@ internal class ProductUseCasesImpl(
         val confirmRequest = PurchaseConfirmRequest(order, trxID)
 
         purchaseApiClient.confirm(confirmRequest).let {
-            if (it.status == CONFIRMED) {
+            if (it.status == TransactionStatus.CONFIRMED) {
                 return BuyProductResult.Success
             } else {
                 return BuyProductResult.Failed("Could not confirm transaction $trxID. ConfirmationStatus: ${it.status}")
