@@ -5,8 +5,6 @@ import io.dnatask.domain.api.CardReaderService
 import io.dnatask.domain.api.PaymentApiClient
 import io.dnatask.domain.api.PurchaseApiClient
 import io.dnatask.domain.models.Product
-import io.dnatask.domain.models.card.CardData
-import io.dnatask.domain.models.card.CardReaderException
 import io.dnatask.domain.models.payment.PaymentRequest
 import io.dnatask.domain.models.payment.PaymentStatus
 import io.dnatask.domain.models.purchase.BuyProductResult
@@ -67,17 +65,6 @@ internal class BuyProductsUseCaseImpl(
             } else {
                 return BuyProductResult.Failed("Could not confirm transaction $trxID. ConfirmationStatus: ${it.status}")
             }
-        }
-    }
-
-    private suspend fun CardReaderService.readCardSafely(): CardData? {
-        return try {
-            readCard().also {
-                Log.d(TAG, "cardData: $it")
-            }
-        } catch (exception: CardReaderException) {
-            Log.d(TAG, "Failed to read card: ${exception.message}")
-            null
         }
     }
 }
