@@ -19,7 +19,7 @@ internal class BuyProductsUseCaseImpl(
     private val paymentApiClient: PaymentApiClient,
     private val purchaseApiClient: PurchaseApiClient,
     private val cardReaderService: CardReaderService,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BuyProductsUseCase {
 
     companion object {
@@ -30,7 +30,7 @@ internal class BuyProductsUseCaseImpl(
     }
 
     override suspend fun invoke(products: List<Product>): BuyProductResult =
-        withContext(ioDispatcher) {
+        withContext(dispatcher) {
             Log.d(TAG, "buy(products: $products)")
             val product = products.first()
             val order = mapOf(product.productID to NUMBER_OF_ITEMS)
