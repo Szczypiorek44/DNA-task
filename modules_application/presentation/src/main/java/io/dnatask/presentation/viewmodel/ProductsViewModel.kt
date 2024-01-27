@@ -7,8 +7,8 @@ import io.dnatask.domain.models.purchase.BuyProductResult
 import io.dnatask.domain.usecases.BuyProductsUseCase
 import io.dnatask.domain.usecases.GetProductsUseCase
 import io.dnatask.presentation.models.SelectableProductHolder
-import io.dnatask.presentation.models.SelectableProductHolder.Companion.deselectAll
-import io.dnatask.presentation.models.SelectableProductHolder.Companion.toSelectableProductHolderList
+import io.dnatask.presentation.models.deselectAll
+import io.dnatask.presentation.models.toSelectableProductHolderList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

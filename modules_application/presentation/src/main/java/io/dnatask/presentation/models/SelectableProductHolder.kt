@@ -9,19 +9,17 @@ data class SelectableProductHolder(
     val product: Product
 ) {
     var isSelected by mutableStateOf(false)
+}
 
-    companion object {
-        fun List<Product>.toSelectableProductHolderList(): List<SelectableProductHolder> {
-            return this.map { it.toSelectableProductHolder() }
-        }
+fun List<Product>.toSelectableProductHolderList(): List<SelectableProductHolder> {
+    return this.map { it.toSelectableProductHolder() }
+}
 
-        fun List<SelectableProductHolder>.deselectAll(): List<SelectableProductHolder> {
-            return this.onEach { it.isSelected = false }
-        }
+fun List<SelectableProductHolder>.deselectAll(): List<SelectableProductHolder> {
+    return this.onEach { it.isSelected = false }
+}
 
 
-        private fun Product.toSelectableProductHolder(): SelectableProductHolder {
-            return SelectableProductHolder(this)
-        }
-    }
+private fun Product.toSelectableProductHolder(): SelectableProductHolder {
+    return SelectableProductHolder(this)
 }
