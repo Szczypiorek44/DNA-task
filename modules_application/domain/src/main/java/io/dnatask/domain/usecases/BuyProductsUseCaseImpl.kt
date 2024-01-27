@@ -1,7 +1,7 @@
 package io.dnatask.domain.usecases
 
 import android.util.Log
-import io.dnatask.domain.api.CardReaderService
+import io.dnatask.domain.api.CardReaderApi
 import io.dnatask.domain.api.PaymentApiClient
 import io.dnatask.domain.api.PurchaseApiClient
 import io.dnatask.domain.models.Product
@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 internal class BuyProductsUseCaseImpl(
     private val paymentApiClient: PaymentApiClient,
     private val purchaseApiClient: PurchaseApiClient,
-    private val cardReaderService: CardReaderService,
+    private val cardReaderApi: CardReaderApi,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BuyProductsUseCase {
 
@@ -45,7 +45,7 @@ internal class BuyProductsUseCaseImpl(
             return BuyProductResult.Failed("Failed to initiate purchase")
         }
 
-        val cardData = cardReaderService.readCardSafely()
+        val cardData = cardReaderApi.readCardSafely()
             ?: return BuyProductResult.Failed("Card data is null")
 
         val trxID = purchaseResponse.transactionID

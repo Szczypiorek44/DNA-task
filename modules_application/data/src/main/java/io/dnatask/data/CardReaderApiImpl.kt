@@ -1,7 +1,7 @@
 package io.dnatask.data
 
 import android.util.Log
-import io.dnatask.domain.api.CardReaderService
+import io.dnatask.domain.api.CardReaderApi
 import io.dnatask.domain.models.card.CardData
 import io.dnatask.domain.models.card.CardReaderException
 import kotlinx.coroutines.delay
@@ -9,7 +9,7 @@ import java.util.Calendar
 import java.util.Calendar.SECOND
 import java.util.UUID
 
-class CardReaderServiceImpl : CardReaderService {
+class CardReaderApiImpl : CardReaderApi {
 
     companion object {
         private const val TAG = "CardReaderServiceImpl"
