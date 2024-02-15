@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -12,4 +14,7 @@ dependencies {
     implementation project(':common')
 
     testImplementation "junit:junit:$versions.tests.junit"
+
+    implementation "com.google.dagger:hilt-android:$versions.deps.hilt"
+    kapt "com.google.dagger:hilt-compiler:$versions.deps.hilt"
 }

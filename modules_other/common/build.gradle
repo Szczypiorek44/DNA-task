@@ -8,7 +8,5 @@ android {
 }
 
 dependencies {
-    api "io.insert-koin:koin-androidx-compose:$versions.deps.koin"
-
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.deps.coroutines"
 }

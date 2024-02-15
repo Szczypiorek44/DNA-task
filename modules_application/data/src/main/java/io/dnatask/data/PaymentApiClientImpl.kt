@@ -5,8 +5,11 @@ import io.dnatask.domain.models.payment.PaymentRequest
 import io.dnatask.domain.models.payment.PaymentResponse
 import io.dnatask.domain.models.payment.PaymentStatus
 import kotlinx.coroutines.delay
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PaymentApiClientImpl : PaymentApiClient {
+@Singleton
+internal class PaymentApiClientImpl @Inject constructor() : PaymentApiClient {
     /**
      * Call this method to execute payment on the account connected with provided card token
      */

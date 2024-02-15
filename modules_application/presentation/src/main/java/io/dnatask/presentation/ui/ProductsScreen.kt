@@ -30,19 +30,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.dnatask.domain.models.Product
 import io.dnatask.presentation.R
-import io.dnatask.presentation.di.previewModule
 import io.dnatask.presentation.models.SelectableProductHolder
+import io.dnatask.presentation.models.toSelectableProductHolderList
 import io.dnatask.presentation.theme.Black
 import io.dnatask.presentation.theme.DNATaskAndroidTheme
 import io.dnatask.presentation.theme.White
 import io.dnatask.presentation.viewmodel.ProductsViewModel
-import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.KoinApplication
 
 @Composable
-fun ProductsRoute(productsViewModel: ProductsViewModel = koinViewModel()) {
+fun ProductsRoute(productsViewModel: ProductsViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -168,9 +168,14 @@ private fun ProductsViewModel.PurchaseResult.getReadableMessage(context: Context
 @Preview(showBackground = true)
 @Composable
 fun ProductsScreenPreview() {
-    KoinApplication({ modules(previewModule) }) {
-        DNATaskAndroidTheme {
-            ProductsRoute()
-        }
+    DNATaskAndroidTheme {
+        ProductsScreen(
+            arrayListOf(
+                Product("12345", "Big soda", 123, 2.99, "EUR", 0.22),
+                Product("12347", "Small soda", 123, 6.11, "EUR", 0.22)
+
+            ).toSelectableProductHolderList(),
+            false,
+            onPayButtonClicked = { })
     }
 }

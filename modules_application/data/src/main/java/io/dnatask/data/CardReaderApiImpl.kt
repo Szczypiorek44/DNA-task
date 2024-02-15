@@ -8,8 +8,11 @@ import kotlinx.coroutines.delay
 import java.util.Calendar
 import java.util.Calendar.SECOND
 import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class CardReaderApiImpl : CardReaderApi {
+@Singleton
+internal class CardReaderApiImpl @Inject constructor() : CardReaderApi {
 
     companion object {
         private const val TAG = "CardReaderServiceImpl"

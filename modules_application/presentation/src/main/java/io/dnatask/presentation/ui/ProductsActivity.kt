@@ -6,9 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import dagger.hilt.android.AndroidEntryPoint
 import io.dnatask.presentation.theme.DNATaskAndroidTheme
 import io.dnatask.presentation.theme.MainBackground
 
+@AndroidEntryPoint
 class ProductsActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

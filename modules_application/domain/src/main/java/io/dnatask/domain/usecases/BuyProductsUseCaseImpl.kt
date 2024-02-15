@@ -12,14 +12,16 @@ import io.dnatask.domain.models.purchase.PurchaseConfirmRequest
 import io.dnatask.domain.models.purchase.PurchaseRequest
 import io.dnatask.domain.models.transaction.TransactionStatus
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-internal class BuyProductsUseCaseImpl(
+@Singleton
+internal class BuyProductsUseCaseImpl @Inject constructor(
     private val paymentApiClient: PaymentApiClient,
     private val purchaseApiClient: PurchaseApiClient,
     private val cardReaderApi: CardReaderApi,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher
 ) : BuyProductsUseCase {
 
     companion object {

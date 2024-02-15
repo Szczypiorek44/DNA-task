@@ -16,9 +16,6 @@ To perform payment you must:
 
 My Assumptions:
 
-- For simplicity sake I've decided to use Koin dependency injection, but for projects in which
-  performance is crucial Hilt would be better choice.
-
 Could be improved:
 
 - Double should not be used to pass payment/purchase amount. Long/BigDecimal should be used

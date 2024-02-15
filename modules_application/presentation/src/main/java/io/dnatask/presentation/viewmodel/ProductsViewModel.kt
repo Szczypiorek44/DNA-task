@@ -3,6 +3,7 @@ package io.dnatask.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.dnatask.domain.models.purchase.BuyProductResult
 import io.dnatask.domain.usecases.BuyProductsUseCase
 import io.dnatask.domain.usecases.GetProductsUseCase
@@ -15,8 +16,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductsViewModel(
+@HiltViewModel
+class ProductsViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val buyProductsUseCase: BuyProductsUseCase
 ) : ViewModel() {

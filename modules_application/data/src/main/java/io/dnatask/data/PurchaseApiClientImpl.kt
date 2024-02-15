@@ -10,8 +10,11 @@ import io.dnatask.domain.models.purchase.PurchaseStatusResponse
 import io.dnatask.domain.models.transaction.TransactionStatus
 import kotlinx.coroutines.delay
 import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PurchaseApiClientImpl: PurchaseApiClient {
+@Singleton
+internal class PurchaseApiClientImpl @Inject constructor() : PurchaseApiClient {
     companion object {
         val productList = listOf(
             Product("12345", "Big soda", 123, 2.99, "EUR", 0.22),

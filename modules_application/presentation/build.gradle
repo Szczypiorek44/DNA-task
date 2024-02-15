@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -36,6 +38,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.deps.lifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.deps.lifecycle"
     implementation "androidx.lifecycle:lifecycle-runtime-compose:$versions.deps.lifecycle"
+
+    implementation "androidx.hilt:hilt-navigation-compose:$versions.deps.hiltNavigationCompose"
+    implementation "com.google.dagger:hilt-android:$versions.deps.hilt"
+    kapt "com.google.dagger:hilt-compiler:$versions.deps.hilt"
 
     androidTestImplementation "androidx.test.ext:junit:$versions.tests.androidxJunit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.tests.espresso"

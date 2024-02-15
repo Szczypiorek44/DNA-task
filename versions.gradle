@@ -1,7 +1,7 @@
 ext.versions = [:]
 
 def config = [:]
-config.compileSdk = 33
+config.compileSdk = 34
 config.minSdk = 21
 config.targetSdk = 33
 
@@ -20,7 +20,8 @@ deps.activityCompose = "1.7.2"
 deps.lifecycle = "2.6.1"
 deps.coroutines = "1.3.9"
 deps.coreKtx = "1.10.1"
-deps.koin = "3.5.3"
+deps.hilt = "2.44"
+deps.hiltNavigationCompose = "1.1.0"
 
 versions.deps = deps
 

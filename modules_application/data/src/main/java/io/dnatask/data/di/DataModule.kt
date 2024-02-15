@@ -1,15 +1,26 @@
 package io.dnatask.data.di
 
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import io.dnatask.data.CardReaderApiImpl
 import io.dnatask.data.PaymentApiClientImpl
 import io.dnatask.data.PurchaseApiClientImpl
 import io.dnatask.domain.api.CardReaderApi
 import io.dnatask.domain.api.PaymentApiClient
 import io.dnatask.domain.api.PurchaseApiClient
-import org.koin.dsl.module
 
-val dataModule = module {
-    single<CardReaderApi> { CardReaderApiImpl() }
-    single<PaymentApiClient> { PaymentApiClientImpl() }
-    single<PurchaseApiClient> { PurchaseApiClientImpl() }
+@Module
+@InstallIn(SingletonComponent::class)
+object DataModule {
+
+    @Provides
+    fun providePaymentApiClient(): PaymentApiClient = PaymentApiClientImpl()
+
+    @Provides
+    fun providePurchaseApiClient(): PurchaseApiClient = PurchaseApiClientImpl()
+
+    @Provides
+    fun provideCardReaderApi(): CardReaderApi = CardReaderApiImpl()
 }
