@@ -19,6 +19,10 @@ fun List<SelectableProductHolder>.deselectAll(): List<SelectableProductHolder> {
     return this.onEach { it.isSelected = false }
 }
 
+fun List<SelectableProductHolder>.getSelected(): List<Product> {
+    return this.filter { it.isSelected }.map { it.product }
+}
+
 
 private fun Product.toSelectableProductHolder(): SelectableProductHolder {
     return SelectableProductHolder(this)

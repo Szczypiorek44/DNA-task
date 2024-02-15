@@ -57,7 +57,7 @@ fun ProductsRoute(productsViewModel: ProductsViewModel = hiltViewModel()) {
     ProductsScreen(
         productHolders,
         isPaymentInProgress,
-        onPayButtonClicked = { productsViewModel.onPayButtonClicked() })
+        onPayButtonClicked = { productsViewModel.buySelectedProducts() })
 }
 
 @Composable

@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.dnatask.domain.models.Product
 import io.dnatask.domain.models.purchase.BuyProductResult
 import io.dnatask.domain.usecases.BuyProductsUseCase
 import io.dnatask.domain.usecases.GetProductsUseCase
 import io.dnatask.presentation.models.SelectableProductHolder
 import io.dnatask.presentation.models.deselectAll
+import io.dnatask.presentation.models.getSelected
 import io.dnatask.presentation.models.toSelectableProductHolderList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,31 +45,31 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    fun onPayButtonClicked() {
+    fun buySelectedProducts() {
         viewModelScope.launch {
             if (mutableIsPaymentInProgress.value) {
                 return@launch
             }
 
+            val selectedProducts = products.value?.getSelected()
+            if (selectedProducts.isNullOrEmpty()) {
+                mutablePurchaseResult.emit(PurchaseResult.NoItemsSelected)
+                return@launch
+            }
+
             mutableIsPaymentInProgress.value = true
-            buySelectedProducts()
+            buyProducts(selectedProducts)
             mutableIsPaymentInProgress.value = false
         }
     }
 
-    private suspend fun buySelectedProducts() {
-        val selectedProducts = mutableProducts.value?.filter { it.isSelected }?.map { it.product }
-
-        if (selectedProducts.isNullOrEmpty()) {
-            mutablePurchaseResult.emit(PurchaseResult.NoItemsSelected)
-            return
-        }
-
-        buyProductsUseCase(selectedProducts).let { result ->
+    private suspend fun buyProducts(products: List<Product>) {
+        buyProductsUseCase(products).let { result ->
             when (result) {
                 is BuyProductResult.Success -> {
+                    Log.d(TAG, "buySelectedProducts Success")
                     mutablePurchaseResult.emit(PurchaseResult.Success)
-                    mutableProducts.apply { value = value?.deselectAll() }
+                    mutableProducts.value = mutableProducts.value?.deselectAll()
                 }
 
                 is BuyProductResult.Failed -> {
@@ -77,6 +79,7 @@ class ProductsViewModel @Inject constructor(
             }
         }
     }
+
 
     sealed class PurchaseResult {
         object NoItemsSelected : PurchaseResult()
